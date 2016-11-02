@@ -51,6 +51,14 @@ class NestedSetBehavior extends Behavior
      */
     public $levelAttribute = 'level';
     /**
+     * @var string
+     */
+    public $parentIdAttribute = 'parent_id';
+    /**
+     * @var string
+     */
+    public $ancestorsAttribute = 'ancestors';
+    /**
      * @var bool
      */
     private $_ignoreEvent = false;
@@ -753,9 +761,11 @@ class NestedSetBehavior extends Behavior
 
         try {
             $this->shiftLeftRight($key, 2);
+            $this->owner->setAttribute($this->parentIdAttribute, $target->id);
             $this->owner->setAttribute($this->leftAttribute, $key);
             $this->owner->setAttribute($this->rightAttribute, $key + 1);
             $this->owner->setAttribute($this->levelAttribute, $target->getAttribute($this->levelAttribute) + $levelUp);
+            $this->owner->setAttribute($this->ancestorsAttribute, join(',', $this->owner->ancestors()->select('id')->column()));
             $this->_ignoreEvent = true;
             $result = $this->owner->insert(false, $attributes);
             $this->_ignoreEvent = false;
