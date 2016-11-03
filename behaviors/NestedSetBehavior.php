@@ -767,7 +767,7 @@ class NestedSetBehavior extends Behavior
             $this->owner->setAttribute($this->levelAttribute, $target->getAttribute($this->levelAttribute) + $levelUp);
             $this->owner->setAttribute($this->ancestorsAttribute, join(',', $this->owner->ancestors()->select('id')->column()));
             $this->_ignoreEvent = true;
-            $result = $this->owner->insert(false, $attributes);
+            $result = $this->owner->insert(true, $attributes);
             $this->_ignoreEvent = false;
 
             if (!$result) {
